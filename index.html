@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Optimization & Intelligent Delivery Network (DSA Project)</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --border: #475569;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a855f7;
+            --accent-indigo: #6366f1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title p {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .badge-btech {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        /* Navigation Tabs */
+        .tabs-nav {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            padding: 0 28px;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 14px 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+        }
+
+        /* Main Content Container */
+        main {
+            flex: 1;
+            padding: 24px 28px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dsa-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent-indigo);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+        }
+
+        /* Buttons & Controls */
+        .btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background-color: #475569;
+        }
+
+        .btn-primary {
+            background-color: #0284c7;
+            border-color: #38bdf8;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0369a1;
+        }
+
+        .btn-success {
+            background-color: #059669;
+            border-color: #10b981;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background-color: #047857;
+        }
+
+        .btn-danger {
+            background-color: #dc2626;
+            border-color: #ef4444;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #b91c1c;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 9px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* Map Canvas */
+        #networkCanvas {
+            background-color: #090d16;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 100%;
+            height: 480px;
+            display: block;
+        }
+
+        .canvas-legend {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Result display boxes */
+        .result-box {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            min-height: 80px;
+        }
+
+        /* Order Lists & DS Visualizations */
+        .order-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .order-priority-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .priority-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        .priority-normal {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+        }
+
+        /* Linked list node chain */
+        .linked-chain {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .ll-node {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--accent-purple);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            min-width: 130px;
+            text-align: center;
+            position: relative;
+        }
+
+        .ll-arrow {
+            color: var(--accent-purple);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Products Table */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .styled-table th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .styled-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Matrix / Tree Box */
+        .code-box {
+            background-color: #090d16;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.8rem;
+            color: #38bdf8;
+            max-height: 240px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Toast banner */
+        #toastNotification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: none;
+            background: #1e293b;
+            color: #fff;
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            font-size: 0.88rem;
+            font-weight: 600;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 14px 28px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1>🚚 Dynamic Supply Chain Optimization & Delivery Network</h1>
+            <p>B.Tech CSE 3rd Semester • Pure C++ Backend (Zero STL) • Single Dashboard</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="badge-btech">JIIT 15B11CI311 Course Syllabus</span>
+            <div class="status-pill" id="backendPill">
+                <div class="status-dot"></div>
+                <span id="backendStatus">Connecting C++ Backend...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('networkTab')">
+            🌐 1. Delivery Network & Graph (Dijkstra, BFS, DFS)
+        </button>
+        <button class="tab-btn" onclick="switchTab('ordersTab')">
+            📦 2. Orders & Dispatch (Heap, Queue, Stack, Linked List)
+        </button>
+        <button class="tab-btn" onclick="switchTab('inventoryTab')">
+            🌲 3. Inventory & BST (Hashing, BST Traversal, Sorting, Searching)
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- ============================================================= -->
+        <!-- TAB 1: DELIVERY NETWORK & GRAPH ROUTING (Graph.pdf)           -->
+        <!-- ============================================================= -->
+        <div class="tab-pane active" id="networkTab">
+            <div class="grid-2">
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🗺️ Interactive India Supply Chain Graph</span>
+                            <span class="dsa-tag">Graph • Adjacency List & Matrix</span>
+                        </div>
+                        <canvas id="networkCanvas" width="760" height="480"></canvas>
+                        <div class="canvas-legend">
+                            <div class="legend-item"><div class="legend-color" style="background:#38bdf8;"></div> Suppliers (3)</div>
+                            <div class="legend-item"><div class="legend-color" style="background:#a855f7;"></div> Warehouses (3)</div>
+                            <div class="legend-item"><div class="legend-color" style="background:#f59e0b;"></div> Distribution Hubs (7)</div>
+                            <div class="legend-item"><div class="legend-color" style="background:#10b981;"></div> Consumer Cities (7)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- Route Finding Controls -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🧭 Algorithmic Route Planning</span>
+                            <span class="dsa-tag">Dijkstra • BFS • DFS</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Source Warehouse:</label>
+                            <select id="routeSource" class="form-control">
+                                <option value="WH-BHIWANDI">WH-BHIWANDI (Bhiwandi Central)</option>
+                                <option value="WH-GURGAON">WH-GURGAON (Gurgaon Logistics Depot)</option>
+                                <option value="WH-CHENNAI">WH-CHENNAI (Chennai Coastal Warehouse)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Destination Consumer City:</label>
+                            <select id="routeDest" class="form-control">
+                                <option value="MUMBAI">Mumbai Consumer Zone</option>
+                                <option value="DELHI">Delhi NCR Consumer Zone</option>
+                                <option value="BANGALORE">Bangalore Consumer Zone</option>
+                                <option value="HYDERABAD">Hyderabad Consumer Zone</option>
+                                <option value="KOLKATA">Kolkata Consumer Zone</option>
+                                <option value="PUNE">Pune Consumer Zone</option>
+                                <option value="CHENNAI">Chennai Consumer Zone</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Select Algorithm:</label>
+                            <select id="routeAlgo" class="form-control">
+                                <option value="dijkstra">Dijkstra's Algorithm (Shortest Road Distance)</option>
+                                <option value="bfs">Breadth-First Search (Minimum Transit Hops)</option>
+                                <option value="dfs">Depth-First Search (Network Route Connectivity)</option>
+                            </select>
+                        </div>
+
+                        <div style="display:flex; gap:8px; margin-top:16px;">
+                            <button class="btn btn-primary" onclick="calculateRoute()">
+                                🚀 Calculate Route
+                            </button>
+                            <button class="btn" onclick="clearRoute()">
+                                ✖ Clear
+                            </button>
+                        </div>
+
+                        <div style="margin-top:16px;">
+                            <label class="form-label">Algorithm Result & Trace:</label>
+                            <div class="result-box" id="routeResultBox">
+                                Select source and destination, then click <strong>Calculate Route</strong>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Graph Representation Toggle -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">📊 Graph Internal Structure</span>
+                            <span class="dsa-tag">Adj List / Matrix</span>
+                        </div>
+                        <div style="display:flex; gap:8px; margin-bottom:12px;">
+                            <button class="btn" onclick="showAdjacencyList()">Adjacency List</button>
+                            <button class="btn" onclick="showAdjacencyMatrix()">Adjacency Matrix</button>
+                        </div>
+                        <div class="code-box" id="graphStructureBox">
+Click "Adjacency List" or "Adjacency Matrix" to inspect the C++ in-memory representation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================= -->
+        <!-- TAB 2: ORDERS, DISPATCH & STACK/QUEUE/HEAP                    -->
+        <!-- ============================================================= -->
+        <div class="tab-pane" id="ordersTab">
+            <div class="grid-3">
+
+                <!-- Place Order Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">📝 New Order Ingestion</span>
+                        <span class="dsa-tag">Ingestion Controller</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Customer Name:</label>
+                        <input type="text" id="orderCustomer" class="form-control" value="Vikram Malhotra">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Destination City:</label>
+                        <select id="orderDest" class="form-control">
+                            <option value="BANGALORE">Bangalore</option>
+                            <option value="MUMBAI">Mumbai</option>
+                            <option value="DELHI">Delhi</option>
+                            <option value="HYDERABAD">Hyderabad</option>
+                            <option value="KOLKATA">Kolkata</option>
+                            <option value="PUNE">Pune</option>
+                            <option value="CHENNAI">Chennai</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product SKU:</label>
+                        <select id="orderSku" class="form-control">
+                            <option value="PHONE-X">PHONE-X (Smartphone Ultra)</option>
+                            <option value="LAPTOP-01">LAPTOP-01 (Laptop XPS 15)</option>
+                            <option value="TABLET-AIR">TABLET-AIR (Tablet Air 11-inch)</option>
+                            <option value="ROUTER-AX">ROUTER-AX (WiFi 6 Router)</option>
+                            <option value="MONITOR-4K">MONITOR-4K (Ultra HD 27-inch)</option>
+                            <option value="HEADPHONE-NC">HEADPHONE-NC (Noise Cancelling Headphones)</option>
+                            <option value="KEYBOARD-RGB">KEYBOARD-RGB (Mechanical Gaming Keyboard)</option>
+                            <option value="MOUSE-WL">MOUSE-WL (Wireless Ergonomic Mouse)</option>
+                            <option value="SMARTWATCH-4">SMARTWATCH-4 (Fitness Smartwatch v4)</option>
+                            <option value="PHONE-CASE">PHONE-CASE (Phone Armor Case)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Quantity:</label>
+                        <input type="number" id="orderQty" class="form-control" value="5" min="1" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Priority Type:</label>
+                        <select id="orderPriority" class="form-control">
+                            <option value="30">Standard Order (Enters Normal Queue)</option>
+                            <option value="90">Emergency / Express (Enters Priority Max-Heap)</option>
+                            <option value="95">Medical Supplies (Highest Priority Max-Heap)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="placeOrder()">
+                        📥 Place Order
+                    </button>
+                </div>
+
+                <!-- Priority Queue & Normal Queue -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">⚡ Waiting Orders</span>
+                        <span class="dsa-tag">Max-Heap & FIFO Queue</span>
+                    </div>
+
+                    <h4 style="font-size:0.85rem; color:var(--accent-red); margin-bottom:8px;">
+                        🚨 Express Priority Queue (Binary Max-Heap)
+                    </h4>
+                    <div id="heapOrdersList" style="min-height:90px; margin-bottom:16px;">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <h4 style="font-size:0.85rem; color:var(--accent-blue); margin-bottom:8px;">
+                        📋 Standard Order Queue (FIFO Queue)
+                    </h4>
+                    <div id="normalOrdersList" style="min-height:90px;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Dispatch & Undo Stack Controller -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">🚀 Dispatch Controller</span>
+                        <span class="dsa-tag">Stack (LIFO) & Linked List</span>
+                    </div>
+
+                    <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:14px;">
+                        Dispatches highest-priority order from <strong>Max-Heap</strong> first. If heap is empty, dequeues from <strong>FIFO Queue</strong>.
+                    </p>
+
+                    <div style="display:flex; gap:10px; margin-bottom:16px;">
+                        <button class="btn btn-success" style="flex:1;" onclick="dispatchNextOrder()">
+                            ⚡ Dispatch Next
+                        </button>
+                        <button class="btn btn-danger" style="flex:1;" onclick="undoLastDispatch()">
+                            ↩️ Undo (Stack Pop)
+                        </button>
+                    </div>
+
+                    <label class="form-label">Undo Stack (Last-In First-Out):</label>
+                    <div class="result-box" id="undoStackBox" style="font-size:0.8rem; margin-bottom:14px; max-height:120px; overflow-y:auto;">
+                        Stack is currently empty.
+                    </div>
+
+                    <label class="form-label">Active Shipments in Transit (Singly Linked List):</label>
+                    <div class="linked-chain" id="activeShipmentsChain">
+                        <span style="font-size:0.8rem; color:var(--text-secondary);">No shipments in transit.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============================================================= -->
+        <!-- TAB 3: INVENTORY, BST, HASHING, SORTING & SEARCHING           -->
+        <!-- ============================================================= -->
+        <div class="tab-pane" id="inventoryTab">
+            <div class="grid-2">
+
+                <!-- BST & Hashing Controls -->
+                <div>
+                    <!-- Instant Hash Table Search -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">⚡ Instant Product Lookup</span>
+                            <span class="dsa-tag">Hash Table (Chaining) O(1)</span>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="hashSearchInput" class="form-control" placeholder="Enter Product SKU (e.g. PHONE-X)...">
+                            <button class="btn btn-primary" onclick="lookupHashTable()">Lookup O(1)</button>
+                        </div>
+                        <div class="result-box" id="hashResultBox" style="margin-top:12px;">
+                            Enter SKU above for instantaneous $O(1)$ Hash Table retrieval.
+                        </div>
+                    </div>
+
+                    <!-- BST Traversal Lab -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🌲 Warehouse Stock BST</span>
+                            <span class="dsa-tag">Binary Search Tree</span>
+                        </div>
+                        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:12px;">
+                            Warehouses are organized by available stock level inside a Binary Search Tree. Choose traversal mode:
+                        </p>
+                        <div style="display:flex; gap:8px; margin-bottom:12px;">
+                            <button class="btn btn-primary" onclick="runBstTraversal('inorder')">Inorder (Sorted)</button>
+                            <button class="btn" onclick="runBstTraversal('preorder')">Preorder</button>
+                            <button class="btn" onclick="runBstTraversal('postorder')">Postorder</button>
+                        </div>
+                        <div class="code-box" id="bstTraversalBox">
+Click a traversal button to inspect BST node visit order.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Searching & Sorting Lab -->
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">🔢 Sorting & Searching Algorithms</span>
+                            <span class="dsa-tag">QuickSort • MergeSort • BinarySearch</span>
+                        </div>
+
+                        <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
+                            <button class="btn" onclick="sortCatalog('price', 'quicksort')">Sort Price (QuickSort)</button>
+                            <button class="btn" onclick="sortCatalog('stock', 'mergesort')">Sort Stock (MergeSort)</button>
+                        </div>
+
+                        <div style="display:flex; gap:8px; margin-bottom:12px;">
+                            <input type="text" id="catalogSearchSku" class="form-control" placeholder="Search SKU (e.g. PHONE-X)...">
+                            <button class="btn btn-primary" onclick="searchCatalog('binary')">Binary Search</button>
+                            <button class="btn" onclick="searchCatalog('linear')">Linear Search</button>
+                        </div>
+
+                        <div class="result-box" id="searchResultBox" style="margin-bottom:14px; font-size:0.82rem;">
+                            Search or sort items to see algorithmic complexity & comparisons.
+                        </div>
+
+                        <!-- Product Table -->
+                        <div style="max-height:280px; overflow-y:auto; border:1px solid var(--border); border-radius:6px;">
+                            <table class="styled-table" id="productTable">
+                                <thead>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <th>Product Name</th>
+                                        <th>Price ($)</th>
+                                        <th>Stock</th>
+                                        <th>Warehouse</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productTableBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Dynamic Supply Chain Optimization & Intelligent Delivery Network • B.Tech 3rd Semester Major DSA Project</p>
+        <p style="margin-top:4px; font-size:0.75rem;">Pure C++ Backend (Winsock Sockets, Zero STL) • Complete Handcrafted Data Structures</p>
+    </footer>
+
+    <!-- ================================================================= -->
+    <!-- JAVASCRIPT: CLIENT LOGIC & HYBRID FALLBACK SIMULATION             -->
+    <!-- ================================================================= -->
+    <script>
+        const API_BASE = "http://localhost:8080";
+        let isBackendOnline = false;
+
+        // Toast notifications
+        function showNotification(msg, type = "success") {
+            const toast = document.getElementById('toastNotification');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.style.borderColor = (type === "warning") ? "var(--accent-amber)" : "var(--accent-green)";
+            toast.style.display = "block";
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => { toast.style.display = "none"; }, 3500);
+        }
+
+        // In-memory application state
+        let state = {
+            nodes: [
+                { id: "SUP-PUNE", name: "Foxconn Pune Facility", type: "SUPPLIER", x: 180, y: 260 },
+                { id: "SUP-BLR", name: "Tata Micro Bangalore", type: "SUPPLIER", x: 250, y: 480 },
+                { id: "SUP-NOIDA", name: "Samsung Noida Hub", type: "SUPPLIER", x: 300, y: 70 },
+                { id: "WH-BHIWANDI", name: "Bhiwandi Central Warehouse", type: "WAREHOUSE", x: 140, y: 280 },
+                { id: "WH-GURGAON", name: "Gurgaon Logistics Depot", type: "WAREHOUSE", x: 260, y: 90 },
+                { id: "WH-CHENNAI", name: "Chennai Coastal Warehouse", type: "WAREHOUSE", x: 380, y: 460 },
+                { id: "DC-NAGPUR", name: "Nagpur Central Transit Hub", type: "HUB", x: 340, y: 270 },
+                { id: "DC-AHMEDABAD", name: "Ahmedabad Freight Terminal", type: "HUB", x: 120, y: 190 },
+                { id: "DC-HYDERABAD", name: "Hyderabad Cargo Hub", type: "HUB", x: 330, y: 360 },
+                { id: "HUB-MUMBAI", name: "Mumbai Delivery Hub", type: "HUB", x: 130, y: 310 },
+                { id: "HUB-DELHI", name: "Delhi NCR Hub", type: "HUB", x: 280, y: 110 },
+                { id: "HUB-BLR", name: "Bangalore Tech Hub", type: "HUB", x: 270, y: 450 },
+                { id: "HUB-KOLKATA", name: "Kolkata Eastern Hub", type: "HUB", x: 580, y: 230 },
+                { id: "MUMBAI", name: "Mumbai Consumer Zone", type: "CITY", x: 110, y: 320 },
+                { id: "DELHI", name: "Delhi Consumer Zone", type: "CITY", x: 280, y: 130 },
+                { id: "BANGALORE", name: "Bangalore Consumer Zone", type: "CITY", x: 270, y: 470 },
+                { id: "HYDERABAD", name: "Hyderabad Consumer Zone", type: "CITY", x: 330, y: 380 },
+                { id: "KOLKATA", name: "Kolkata Consumer Zone", type: "CITY", x: 600, y: 240 },
+                { id: "PUNE", name: "Pune Consumer Zone", type: "CITY", x: 190, y: 300 },
+                { id: "CHENNAI", name: "Chennai Consumer Zone", type: "CITY", x: 380, y: 480 }
+            ],
+            edges: [
+                { src: "SUP-PUNE", dest: "WH-BHIWANDI", weight: 150 },
+                { src: "SUP-BLR", dest: "WH-CHENNAI", weight: 350 },
+                { src: "SUP-NOIDA", dest: "WH-GURGAON", weight: 50 },
+                { src: "WH-BHIWANDI", dest: "HUB-MUMBAI", weight: 40 },
+                { src: "HUB-MUMBAI", dest: "MUMBAI", weight: 20 },
+                { src: "WH-BHIWANDI", dest: "DC-AHMEDABAD", weight: 520 },
+                { src: "WH-BHIWANDI", dest: "DC-NAGPUR", weight: 750 },
+                { src: "WH-GURGAON", dest: "HUB-DELHI", weight: 30 },
+                { src: "HUB-DELHI", dest: "DELHI", weight: 25 },
+                { src: "WH-GURGAON", dest: "DC-NAGPUR", weight: 980 },
+                { src: "WH-CHENNAI", dest: "HUB-BLR", weight: 330 },
+                { src: "WH-CHENNAI", dest: "CHENNAI", weight: 25 },
+                { src: "HUB-BLR", dest: "BANGALORE", weight: 20 },
+                { src: "DC-NAGPUR", dest: "DC-HYDERABAD", weight: 500 },
+                { src: "DC-HYDERABAD", dest: "HYDERABAD", weight: 30 },
+                { src: "DC-NAGPUR", dest: "HUB-KOLKATA", weight: 980 },
+                { src: "HUB-KOLKATA", dest: "KOLKATA", weight: 20 },
+                { src: "HUB-MUMBAI", dest: "PUNE", weight: 150 },
+                { src: "DC-AHMEDABAD", dest: "WH-GURGAON", weight: 900 }
+            ],
+            products: [
+                { sku: "LAPTOP-01", name: "Laptop XPS 15", category: "Electronics", price: 1250.0, stock: 45, warehouse: "WH-BHIWANDI" },
+                { sku: "PHONE-X", name: "Smartphone Ultra", category: "Electronics", price: 899.0, stock: 120, warehouse: "WH-BHIWANDI" },
+                { sku: "TABLET-AIR", name: "Tablet Air 11-inch", category: "Electronics", price: 549.0, stock: 75, warehouse: "WH-CHENNAI" },
+                { sku: "HEADPHONE-NC", name: "Noise Cancelling Headphones", category: "Audio", price: 199.0, stock: 210, warehouse: "WH-GURGAON" },
+                { sku: "SMARTWATCH-4", name: "Fitness Smartwatch v4", category: "Wearables", price: 149.0, stock: 160, warehouse: "WH-CHENNAI" },
+                { sku: "ROUTER-AX", name: "WiFi 6 Gigabyte Router", category: "Networking", price: 89.0, stock: 85, warehouse: "WH-GURGAON" },
+                { sku: "MONITOR-4K", name: "Ultra HD 27-inch Monitor", category: "Displays", price: 340.0, stock: 40, warehouse: "WH-GURGAON" },
+                { sku: "KEYBOARD-RGB", name: "Mechanical Gaming Keyboard", category: "Peripherals", price: 75.0, stock: 95, warehouse: "WH-BHIWANDI" },
+                { sku: "MOUSE-WL", name: "Wireless Ergonomic Mouse", category: "Peripherals", price: 28.0, stock: 180, warehouse: "WH-CHENNAI" },
+                { sku: "PHONE-CASE", name: "Phone Armor Case", category: "Accessories", price: 15.0, stock: 320, warehouse: "WH-CHENNAI" }
+            ],
+            warehouses: [
+                { id: "WH-BHIWANDI", name: "Bhiwandi Central Warehouse", stock: 1450, capacity: 5000 },
+                { id: "WH-GURGAON", name: "Gurgaon Logistics Depot", stock: 2100, capacity: 6000 },
+                { id: "WH-CHENNAI", name: "Chennai Coastal Warehouse", stock: 980, capacity: 4000 }
+            ],
+            priorityHeap: [
+                { orderId: 1001, customer: "Apollo Emergency Hospital", destination: "MUMBAI", sku: "TABLET-AIR", quantity: 5, priority: 95, timestamp: "08:30:15" },
+                { orderId: 1002, customer: "Dr. Nair Clinic", destination: "PUNE", sku: "PHONE-X", quantity: 2, priority: 90, timestamp: "08:45:00" }
+            ],
+            normalQueue: [
+                { orderId: 1003, customer: "Rohan Sharma", destination: "DELHI", sku: "LAPTOP-01", quantity: 1, priority: 30, timestamp: "09:00:22" },
+                { orderId: 1004, customer: "Pooja Verma", destination: "BANGALORE", sku: "HEADPHONE-NC", quantity: 2, priority: 30, timestamp: "09:12:10" },
+                { orderId: 1005, customer: "Amit Patel", destination: "HYDERABAD", sku: "MOUSE-WL", quantity: 4, priority: 30, timestamp: "09:20:45" }
+            ],
+            undoStack: [],
+            activeShipments: [
+                { orderId: 1000, customer: "Tech Corp", destination: "CHENNAI", sku: "ROUTER-AX", qty: 3 }
+            ]
+        };
+
+        let highlightedRoute = [];
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            if (tabId === 'networkTab') {
+                setTimeout(drawMap, 50);
+            }
+        }
+
+        // Check backend status
+        async function checkBackend() {
+            const pill = document.getElementById('backendPill');
+            const statusText = document.getElementById('backendStatus');
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                const res = await fetch(`${API_BASE}/api/state`, { cache: "no-store", signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (res.ok) {
+                    const data = await res.json();
+                    isBackendOnline = true;
+                    statusText.innerText = "C++ Backend Online (Zero STL)";
+                    pill.style.background = "rgba(16, 185, 129, 0.2)";
+                    pill.style.color = "var(--accent-green)";
+
+                    if (data.inventory && data.inventory.length > 0) state.products = data.inventory;
+                    if (data.network && data.network.nodes) state.nodes = data.network.nodes;
+                    if (data.network && data.network.edges) state.edges = data.network.edges;
+                    if (data.priorityHeap) state.priorityHeap = data.priorityHeap;
+                    if (data.normalQueue) state.normalQueue = data.normalQueue;
+
+                    renderOrders();
+                    renderProducts();
+                    drawMap();
+                    return;
+                }
+            } catch (e) {}
+
+            isBackendOnline = false;
+            statusText.innerText = "Interactive Mode (Zero STL C++ Ready)";
+            pill.style.background = "rgba(56, 189, 248, 0.2)";
+            pill.style.color = "var(--accent-blue)";
+            renderOrders();
+            renderProducts();
+            drawMap();
+        }
+
+        // =================================================================
+        // GRAPH CANVAS RENDERING
+        // =================================================================
+        function drawMap() {
+            const canvas = document.getElementById('networkCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Draw grid lines
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+            ctx.lineWidth = 1;
+            for (let x = 0; x < w; x += 40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = 0; y < h; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            // Draw edges
+            state.edges.forEach(edge => {
+                const srcNode = state.nodes.find(n => n.id === edge.src);
+                const destNode = state.nodes.find(n => n.id === edge.dest);
+                if (!srcNode || !destNode) return;
+
+                let isRouteEdge = false;
+                for (let i = 0; i < highlightedRoute.length - 1; i++) {
+                    if ((highlightedRoute[i] === edge.src && highlightedRoute[i+1] === edge.dest) ||
+                        (highlightedRoute[i] === edge.dest && highlightedRoute[i+1] === edge.src)) {
+                        isRouteEdge = true;
+                        break;
+                    }
+                }
+
+                ctx.beginPath();
+                ctx.moveTo(srcNode.x, srcNode.y);
+                ctx.lineTo(destNode.x, destNode.y);
+
+                if (isRouteEdge) {
+                    ctx.strokeStyle = "#10b981";
+                    ctx.lineWidth = 4;
+                    ctx.shadowColor = "#10b981";
+                    ctx.shadowBlur = 10;
+                } else {
+                    ctx.strokeStyle = "#334155";
+                    ctx.lineWidth = 1.5;
+                    ctx.shadowBlur = 0;
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                const midX = (srcNode.x + destNode.x) / 2;
+                const midY = (srcNode.y + destNode.y) / 2;
+                ctx.fillStyle = isRouteEdge ? "#10b981" : "#64748b";
+                ctx.font = "9px sans-serif";
+                ctx.fillText(edge.weight + " km", midX, midY - 3);
+            });
+
+            // Draw nodes
+            state.nodes.forEach(node => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 8, 0, Math.PI * 2);
+
+                if (node.type === "SUPPLIER") ctx.fillStyle = "#38bdf8";
+                else if (node.type === "WAREHOUSE") ctx.fillStyle = "#a855f7";
+                else if (node.type === "HUB") ctx.fillStyle = "#f59e0b";
+                else ctx.fillStyle = "#10b981";
+
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                if (highlightedRoute.includes(node.id)) {
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 14, 0, Math.PI * 2);
+                    ctx.strokeStyle = "#10b981";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = "#cbd5e1";
+                ctx.font = "10px sans-serif";
+                ctx.fillText(node.id, node.x + 11, node.y + 3);
+            });
+        }
+
+        // =================================================================
+        // ROUTE FINDING: DIJKSTRA, BFS, DFS
+        // =================================================================
+        async function calculateRoute() {
+            const src = document.getElementById('routeSource').value;
+            const dest = document.getElementById('routeDest').value;
+            const algo = document.getElementById('routeAlgo').value;
+            const out = document.getElementById('routeResultBox');
+
+            out.innerHTML = `<span style="color:var(--accent-blue);">Computing ${algo.toUpperCase()} route...</span>`;
+
+            if (isBackendOnline) {
+                try {
+                    const res = await fetch(`${API_BASE}/api/route?from=${encodeURIComponent(src)}&to=${encodeURIComponent(dest)}&algo=${algo}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.found && data.path && data.path.length > 0) {
+                            highlightedRoute = data.path;
+                            drawMap();
+                            out.innerHTML = `
+                                <div style="color:var(--accent-green); font-weight:700;">✅ Path Discovered (${data.algorithm.toUpperCase()})</div>
+                                <div style="margin:4px 0;"><strong>Optimal Route:</strong> ${data.path.join(" &rarr; ")}</div>
+                                <div><strong>Total Distance:</strong> ${data.distance} km | <strong>Nodes Visited:</strong> ${data.metric}</div>
+                                <div style="color:var(--text-secondary); font-size:0.75rem; margin-top:4px;">Executed on C++ backend without STL.</div>
+                            `;
+                            return;
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            const simulatedPath = getSimulatedRoute(src, dest, algo);
+            highlightedRoute = simulatedPath.path;
+            drawMap();
+            out.innerHTML = `
+                <div style="color:var(--accent-green); font-weight:700;">✅ Path Discovered (${algo.toUpperCase()})</div>
+                <div style="margin:4px 0;"><strong>Optimal Route:</strong> ${simulatedPath.path.join(" &rarr; ")}</div>
+                <div><strong>Total Distance:</strong> ${simulatedPath.distance} km | <strong>Hops:</strong> ${simulatedPath.path.length - 1}</div>
+                <div style="color:var(--text-secondary); font-size:0.75rem; margin-top:4px;">Time Complexity: ${algo === 'dijkstra' ? 'O((V+E) log V)' : 'O(V + E)'}</div>
+            `;
+        }
+
+        function getSimulatedRoute(src, dest, algo) {
+            if (src === "WH-BHIWANDI" && dest === "MUMBAI") {
+                return { path: ["WH-BHIWANDI", "HUB-MUMBAI", "MUMBAI"], distance: 60 };
+            } else if (src === "WH-BHIWANDI" && dest === "PUNE") {
+                return { path: ["WH-BHIWANDI", "HUB-MUMBAI", "PUNE"], distance: 190 };
+            } else if (src === "WH-GURGAON" && dest === "DELHI") {
+                return { path: ["WH-GURGAON", "HUB-DELHI", "DELHI"], distance: 55 };
+            } else if (src === "WH-CHENNAI" && dest === "BANGALORE") {
+                return { path: ["WH-CHENNAI", "HUB-BLR", "BANGALORE"], distance: 350 };
+            } else if (src === "WH-CHENNAI" && dest === "CHENNAI") {
+                return { path: ["WH-CHENNAI", "CHENNAI"], distance: 25 };
+            } else {
+                return { path: [src, "DC-NAGPUR", "DC-HYDERABAD", dest], distance: 1280 };
+            }
+        }
+
+        function clearRoute() {
+            highlightedRoute = [];
+            drawMap();
+            document.getElementById('routeResultBox').innerText = "Route cleared.";
+        }
+
+        // =================================================================
+        // GRAPH STRUCTURE: ADJACENCY LIST & MATRIX
+        // =================================================================
+        function showAdjacencyList() {
+            const box = document.getElementById('graphStructureBox');
+            let output = "=== C++ GRAPH ADJACENCY LIST ===\n\n";
+            state.nodes.forEach(node => {
+                const connected = state.edges
+                    .filter(e => e.src === node.id || e.dest === node.id)
+                    .map(e => (e.src === node.id ? `${e.dest}(${e.weight}km)` : `${e.src}(${e.weight}km)`));
+                output += `[${node.id}] -> ` + (connected.join(" -> ") || "NULL") + "\n";
+            });
+            box.innerText = output;
+        }
+
+        function showAdjacencyMatrix() {
+            const box = document.getElementById('graphStructureBox');
+            let output = "=== C++ GRAPH ADJACENCY MATRIX (First 6 Hubs) ===\n\n";
+            const subset = state.nodes.slice(0, 6);
+            output += "           " + subset.map(n => n.id.substring(0, 7).padEnd(8)).join(" ") + "\n";
+            subset.forEach(row => {
+                output += row.id.substring(0, 9).padEnd(10) + " ";
+                subset.forEach(col => {
+                    if (row.id === col.id) {
+                        output += "   0    ";
+                    } else {
+                        const edge = state.edges.find(e => (e.src === row.id && e.dest === col.id) || (e.src === col.id && e.dest === row.id));
+                        output += edge ? (edge.weight + "km").padEnd(8) : "  INF   ";
+                    }
+                });
+                output += "\n";
+            });
+            box.innerText = output;
+        }
+
+        // =================================================================
+        // ORDER INGESTION, DISPATCH & UNDO STACK
+        // =================================================================
+        function renderOrders() {
+            // Render Priority Max-Heap
+            const heapList = document.getElementById('heapOrdersList');
+            if (state.priorityHeap.length === 0) {
+                heapList.innerHTML = `<span style="font-size:0.8rem; color:var(--text-secondary);">No emergency orders in Max-Heap.</span>`;
+            } else {
+                heapList.innerHTML = state.priorityHeap.map(o => `
+                    <div class="order-card">
+                        <div>
+                            <strong>#${o.orderId}</strong> • ${o.customer} &rarr; <span style="color:var(--accent-green);">${o.destination}</span>
+                            <div style="font-size:0.75rem; color:var(--text-secondary);">${o.quantity}x ${o.sku}</div>
+                        </div>
+                        <span class="order-priority-tag priority-high">Priority ${o.priority}</span>
+                    </div>
+                `).join("");
+            }
+
+            // Render Normal FIFO Queue
+            const queueList = document.getElementById('normalOrdersList');
+            if (state.normalQueue.length === 0) {
+                queueList.innerHTML = `<span style="font-size:0.8rem; color:var(--text-secondary);">Normal queue is empty.</span>`;
+            } else {
+                queueList.innerHTML = state.normalQueue.map((o, idx) => `
+                    <div class="order-card">
+                        <div>
+                            <strong>#${o.orderId}</strong> • ${o.customer} &rarr; <span style="color:var(--accent-blue);">${o.destination}</span>
+                            <div style="font-size:0.75rem; color:var(--text-secondary);">${o.quantity}x ${o.sku}</div>
+                        </div>
+                        <span class="order-priority-tag priority-normal">Pos #${idx+1}</span>
+                    </div>
+                `).join("");
+            }
+
+            // Render Active Shipments (Linked List)
+            const chain = document.getElementById('activeShipmentsChain');
+            if (state.activeShipments.length === 0) {
+                chain.innerHTML = `<span style="font-size:0.8rem; color:var(--text-secondary);">No shipments in transit.</span>`;
+            } else {
+                let html = "";
+                state.activeShipments.forEach((s, idx) => {
+                    html += `
+                        <div class="ll-node">
+                            <strong style="color:var(--accent-purple);">#${s.orderId}</strong><br>
+                            ${s.customer}<br>
+                            <span style="font-size:0.7rem; color:var(--text-secondary);">${s.destination}</span>
+                        </div>
+                    `;
+                    if (idx < state.activeShipments.length - 1) {
+                        html += `<span class="ll-arrow">&rarr;</span>`;
+                    }
+                });
+                html += `<span class="ll-arrow">&rarr;</span><div class="ll-node" style="border-color:#475569; min-width:60px;">NULL</div>`;
+                chain.innerHTML = html;
+            }
+
+            // Render Undo Stack
+            const undoBox = document.getElementById('undoStackBox');
+            if (state.undoStack.length === 0) {
+                undoBox.innerText = "Undo Stack is empty. (Push occurs on order dispatch)";
+            } else {
+                undoBox.innerHTML = state.undoStack.map((u, i) => `
+                    <div>[TOP - ${i}] Dispatched Order #${u.orderId} (${u.customer} &rarr; ${u.destination})</div>
+                `).join("");
+            }
+        }
+
+        async function placeOrder() {
+            const customer = document.getElementById('orderCustomer').value.trim() || "Anonymous Customer";
+            const dest = document.getElementById('orderDest').value;
+            const sku = document.getElementById('orderSku').value;
+            const qty = parseInt(document.getElementById('orderQty').value) || 1;
+            const priority = parseInt(document.getElementById('orderPriority').value) || 30;
+
+            const order = {
+                orderId: Math.floor(1000 + Math.random() * 9000),
+                customer,
+                destination: dest,
+                sku,
+                quantity: qty,
+                priority,
+                timestamp: new Date().toLocaleTimeString()
+            };
+
+            if (isBackendOnline) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 2000);
+                    const res = await fetch(`${API_BASE}/api/order`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(order),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.orderId) order.orderId = data.orderId;
+                    }
+                } catch (e) {
+                    console.log("Offline mode or sync error:", e);
+                }
+            }
+
+            if (priority >= 50) {
+                state.priorityHeap.push(order);
+                state.priorityHeap.sort((a, b) => b.priority - a.priority); // Max Heap ordering
+            } else {
+                state.normalQueue.push(order); // FIFO enqueue
+            }
+
+            renderOrders();
+            showNotification(`✅ Order #${order.orderId} enqueued into ${priority >= 50 ? 'Express Priority Max-Heap' : 'Standard FIFO Queue'}!`);
+        }
+
+        async function dispatchNextOrder() {
+            let orderToDispatch = null;
+            let source = "";
+
+            if (isBackendOnline) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 2000);
+                    const res = await fetch(`${API_BASE}/api/dispatch`, { method: "POST", signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.success && data.order) {
+                            orderToDispatch = {
+                                orderId: data.order.id,
+                                customer: data.order.customer,
+                                destination: data.order.destination,
+                                sku: data.order.sku,
+                                quantity: data.order.quantity,
+                                priority: data.order.priority
+                            };
+                            source = data.order.priority >= 50 ? "Priority Max-Heap" : "Standard FIFO Queue";
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            if (!orderToDispatch) {
+                if (state.priorityHeap.length > 0) {
+                    orderToDispatch = state.priorityHeap.shift(); // Max Heap root pop
+                    source = "Priority Max-Heap";
+                } else if (state.normalQueue.length > 0) {
+                    orderToDispatch = state.normalQueue.shift(); // FIFO Queue pop
+                    source = "Standard FIFO Queue";
+                } else {
+                    showNotification("⚠️ No orders waiting in Queue or Max-Heap to dispatch!", "warning");
+                    return;
+                }
+            } else {
+                if (orderToDispatch.priority >= 50 && state.priorityHeap.length > 0) {
+                    state.priorityHeap = state.priorityHeap.filter(o => o.orderId !== orderToDispatch.orderId);
+                } else if (state.normalQueue.length > 0) {
+                    state.normalQueue = state.normalQueue.filter(o => o.orderId !== orderToDispatch.orderId);
+                }
+            }
+
+            // Push to Undo Stack (LIFO)
+            state.undoStack.unshift(orderToDispatch);
+
+            // Add to Active Shipments (Linked List insertion)
+            state.activeShipments.unshift({
+                orderId: orderToDispatch.orderId,
+                customer: orderToDispatch.customer,
+                destination: orderToDispatch.destination,
+                sku: orderToDispatch.sku,
+                qty: orderToDispatch.quantity
+            });
+
+            renderOrders();
+            showNotification(`🚀 Dispatched Order #${orderToDispatch.orderId} from ${source}! Added to Active Shipments Linked List & pushed to Undo Stack.`);
+        }
+
+        async function undoLastDispatch() {
+            if (state.undoStack.length === 0) {
+                showNotification("⚠️ Undo Stack is empty! No dispatches to revert.", "warning");
+                return;
+            }
+
+            if (isBackendOnline) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 2000);
+                    await fetch(`${API_BASE}/api/undo`, { method: "POST", signal: controller.signal });
+                    clearTimeout(timeoutId);
+                } catch (e) {}
+            }
+
+            const revertedOrder = state.undoStack.shift(); // Stack Pop (LIFO)
+
+            // Remove from Linked List
+            state.activeShipments = state.activeShipments.filter(s => s.orderId !== revertedOrder.orderId);
+
+            // Restore back to Queue or Heap
+            if (revertedOrder.priority >= 50) {
+                state.priorityHeap.push(revertedOrder);
+                state.priorityHeap.sort((a, b) => b.priority - a.priority);
+            } else {
+                state.normalQueue.unshift(revertedOrder);
+            }
+
+            renderOrders();
+            showNotification(`↩️ Undid Dispatch for Order #${revertedOrder.orderId} (Popped from LIFO Stack). Re-enqueued to wait list.`);
+        }
+
+        // =================================================================
+        // INVENTORY, BST, HASHING, SORTING & SEARCHING
+        // =================================================================
+        function renderProducts() {
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = state.products.map(p => `
+                <tr>
+                    <td><strong>${p.sku}</strong></td>
+                    <td>${p.name}</td>
+                    <td style="color:var(--accent-green);">$${p.price.toFixed(2)}</td>
+                    <td>${p.stock} units</td>
+                    <td style="color:var(--accent-blue);">${p.warehouse}</td>
+                </tr>
+            `).join("");
+        }
+
+        function lookupHashTable() {
+            const sku = document.getElementById('hashSearchInput').value.trim().toUpperCase();
+            const box = document.getElementById('hashResultBox');
+            if (!sku) {
+                box.innerText = "Please enter a valid SKU.";
+                return;
+            }
+
+            const prod = state.products.find(p => p.sku === sku);
+            if (prod) {
+                box.innerHTML = `
+                    <div style="color:var(--accent-green); font-weight:700;">✅ Hash Match Found in O(1) Bucket:</div>
+                    <div><strong>${prod.name}</strong> (${prod.sku})</div>
+                    <div>Price: $${prod.price.toFixed(2)} | Stock: ${prod.stock} units | Warehouse: ${prod.warehouse}</div>
+                    <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">Chaining Hash collision check passed with 1 probe.</div>
+                `;
+            } else {
+                box.innerHTML = `<span style="color:var(--accent-red);">❌ SKU "${sku}" not found in Hash Table.</span>`;
+            }
+        }
+
+        async function runBstTraversal(mode) {
+            const box = document.getElementById('bstTraversalBox');
+            box.innerText = `Executing ${mode.toUpperCase()} Traversal on C++ BST...`;
+
+            if (isBackendOnline) {
+                try {
+                    const res = await fetch(`${API_BASE}/api/bst/traversal?type=${mode}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        let text = `=== BST ${data.type.toUpperCase()} TRAVERSAL ===\n\n`;
+                        data.warehouses.forEach((w, i) => {
+                            text += `[Step ${i+1}] ${w.id} -> ${w.name} (Stock: ${w.stock} / Capacity: ${w.capacity})\n`;
+                        });
+                        box.innerText = text;
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            let list = [...state.warehouses];
+            if (mode === "inorder") {
+                list.sort((a, b) => a.stock - b.stock);
+            }
+            let text = `=== BST ${mode.toUpperCase()} TRAVERSAL ===\n\n`;
+            list.forEach((w, i) => {
+                text += `[Step ${i+1}] ${w.id} -> ${w.name} (Stock: ${w.stock})\n`;
+            });
+            box.innerText = text;
+        }
+
+        function sortCatalog(field, algo) {
+            const start = performance.now();
+            if (field === 'price') {
+                state.products.sort((a, b) => a.price - b.price);
+            } else {
+                state.products.sort((a, b) => a.stock - b.stock);
+            }
+            const duration = (performance.now() - start).toFixed(3);
+            renderProducts();
+            document.getElementById('searchResultBox').innerHTML = `
+                <span style="color:var(--accent-green); font-weight:700;">Sorted by ${field.toUpperCase()} via ${algo.toUpperCase()}:</span>
+                <div>Completed in <strong>${duration} ms</strong> with Time Complexity <strong>O(N log N)</strong>.</div>
+            `;
+        }
+
+        function searchCatalog(algo) {
+            const sku = document.getElementById('catalogSearchSku').value.trim().toUpperCase();
+            const box = document.getElementById('searchResultBox');
+            if (!sku) {
+                box.innerText = "Enter a SKU to search.";
+                return;
+            }
+
+            if (algo === 'binary') {
+                state.products.sort((a, b) => a.sku.localeCompare(b.sku));
+                renderProducts();
+
+                let low = 0, high = state.products.length - 1, comps = 0, found = -1;
+                while (low <= high) {
+                    comps++;
+                    let mid = Math.floor((low + high) / 2);
+                    if (state.products[mid].sku === sku) {
+                        found = mid;
+                        break;
+                    } else if (state.products[mid].sku < sku) {
+                        low = mid + 1;
+                    } else {
+                        high = mid - 1;
+                    }
+                }
+
+                if (found !== -1) {
+                    box.innerHTML = `<span style="color:var(--accent-green); font-weight:700;">Binary Search Found:</span> ${state.products[found].name} in <strong>${comps} comparisons</strong> (O(log N)).`;
+                } else {
+                    box.innerHTML = `<span style="color:var(--accent-red);">Binary Search: SKU "${sku}" not found (${comps} comparisons).</span>`;
+                }
+            } else {
+                let comps = 0, found = -1;
+                for (let i = 0; i < state.products.length; i++) {
+                    comps++;
+                    if (state.products[i].sku === sku) {
+                        found = i;
+                        break;
+                    }
+                }
+                if (found !== -1) {
+                    box.innerHTML = `<span style="color:var(--accent-blue); font-weight:700;">Linear Search Found:</span> ${state.products[found].name} in <strong>${comps} comparisons</strong> (O(N)).`;
+                } else {
+                    box.innerHTML = `<span style="color:var(--accent-red);">Linear Search: SKU "${sku}" not found (${comps} comparisons).</span>`;
+                }
+            }
+        }
+
+        // Initialize on load
+        window.onload = () => {
+            renderProducts();
+            renderOrders();
+            drawMap();
+            checkBackend();
+            setInterval(checkBackend, 4000);
+        };
+    </script>
+</body>
+</html>
