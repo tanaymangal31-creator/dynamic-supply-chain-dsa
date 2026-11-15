@@ -1,0 +1,25 @@
+{
+  "name": "dynamic-supply-chain-dsa",
+  "version": "1.0.0",
+  "description": "Dynamic Supply Chain Optimization & Intelligent Delivery Network - Pure C++ Backend (Zero STL) + Live Single-Page Dashboard",
+  "main": "index.html",
+  "scripts": {
+    "dev": "node dev.js",
+    "start": "node dev.js",
+    "build": "g++ -std=c++14 -O2 backend.cpp -o backend.exe -lws2_32"
+  },
+  "keywords": [
+    "dsa",
+    "cpp",
+    "zero-stl",
+    "graph",
+    "dijkstra",
+    "binary-search-tree",
+    "heap",
+    "queue",
+    "stack",
+    "linked-list"
+  ],
+  "author": "Tanay Mangal",
+  "license": "ISC"
+}
