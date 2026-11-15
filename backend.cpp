@@ -2043,6 +2043,7 @@ void handleClientRequest(SOCKET clientSocket) {
                 f = fopen(resolvedPath.c_str(), "rb");
             }
         }
+        if (!f) f = fopen("D:\\projects\\dynamic-supply-chain-dsa\\index.html", "rb");
         if (!f) f = fopen("C:\\Users\\Omen\\.gemini\\antigravity\\scratch\\supply_chain_dsa\\index.html", "rb");
         if (!f) f = fopen("C:\\Users\\Omen\\index.html", "rb");
         if (!f) f = fopen("C:\\Users\\Omen\\.gemini\\antigravity\\brain\\d26ed44f-d54b-4b62-99d4-4b604bd0e3b3\\dashboard.html", "rb");
