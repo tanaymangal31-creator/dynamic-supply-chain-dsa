@@ -465,14 +465,7 @@
     <header>
         <div class="header-title">
             <h1>🚚 Dynamic Supply Chain Optimization & Delivery Network</h1>
-            <p>B.Tech CSE 3rd Semester • Pure C++ Backend (Zero STL) • Single Dashboard</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <span class="badge-btech">JIIT 15B11CI311 Course Syllabus</span>
-            <div class="status-pill" id="backendPill">
-                <div class="status-dot"></div>
-                <span id="backendStatus">Connecting C++ Backend...</span>
-            </div>
+            <p>Pure C++ Backend (Zero STL) • Single Dashboard</p>
         </div>
     </header>
 
@@ -927,9 +920,11 @@ Click a traversal button to inspect BST node visit order.
                 if (res.ok) {
                     const data = await res.json();
                     isBackendOnline = true;
-                    statusText.innerText = "C++ Backend Online (Zero STL)";
-                    pill.style.background = "rgba(16, 185, 129, 0.2)";
-                    pill.style.color = "var(--accent-green)";
+                    if (statusText) statusText.innerText = "C++ Backend Online (Zero STL)";
+                    if (pill) {
+                        pill.style.background = "rgba(16, 185, 129, 0.2)";
+                        pill.style.color = "var(--accent-green)";
+                    }
 
                     if (data.inventory && data.inventory.length > 0) state.products = data.inventory;
                     if (data.network && data.network.nodes) state.nodes = data.network.nodes;
@@ -945,9 +940,11 @@ Click a traversal button to inspect BST node visit order.
             } catch (e) {}
 
             isBackendOnline = false;
-            statusText.innerText = "Interactive Mode (Zero STL C++ Ready)";
-            pill.style.background = "rgba(56, 189, 248, 0.2)";
-            pill.style.color = "var(--accent-blue)";
+            if (statusText) statusText.innerText = "Interactive Mode (Zero STL C++ Ready)";
+            if (pill) {
+                pill.style.background = "rgba(56, 189, 248, 0.2)";
+                pill.style.color = "var(--accent-blue)";
+            }
             renderOrders();
             renderProducts();
             drawMap();

@@ -2,7 +2,7 @@
 
 An algorithmic framework for supply chain optimization, route planning, order dispatching, and inventory management built from scratch in **pure C++ without any Standard Template Library (Zero STL)**, paired with an interactive single-page dashboard.
 
-> **Targeted Syllabus:** B.Tech Computer Science & Engineering (3rd Semester DSA • Course Code: 15B11CI311)  
+> **Course Focus:** Advanced Data Structures & Algorithms (DSA)  
 > **Backend:** Pure C++ (`backend.cpp`) with custom memory management and handcrafted data structures  
 > **Frontend:** Single-file interactive web dashboard (`index.html`) using HTML, CSS, and vanilla JavaScript  
 
