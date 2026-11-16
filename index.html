@@ -811,7 +811,9 @@ Click a traversal button to inspect BST node visit order.
     <!-- JAVASCRIPT: CLIENT LOGIC & HYBRID FALLBACK SIMULATION             -->
     <!-- ================================================================= -->
     <script>
-        const API_BASE = "http://localhost:8080";
+        const API_BASE = (window.location.origin && window.location.origin.startsWith('http')) 
+            ? window.location.origin 
+            : "http://localhost:8080";
         let isBackendOnline = false;
 
         // Toast notifications

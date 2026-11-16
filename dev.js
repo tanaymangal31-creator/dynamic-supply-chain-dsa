@@ -11,6 +11,7 @@ console.log('================================================================\n'
 try {
     if (process.platform === 'win32') {
         execSync('taskkill /F /IM backend.exe 2>nul', { stdio: 'ignore' });
+        execSync('taskkill /F /IM SpotifyLauncher.exe 2>nul', { stdio: 'ignore' });
     } else {
         execSync('pkill -f backend 2>/dev/null', { stdio: 'ignore' });
     }
